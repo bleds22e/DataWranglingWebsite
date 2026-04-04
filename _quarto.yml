@@ -1,0 +1,114 @@
+project:
+  type: website
+
+website:
+  title: "Data Wrangling in R for Ecologists"
+  navbar:
+    left:
+      - text: Home
+        href: index.qmd
+  sidebar:
+    style: docked
+    search: true
+    contents:
+      - section: "Spreadsheets"
+        contents:
+          - href: Week01_Spreadsheets/Week1_Spreadsheets.qmd
+            text: Spreadsheets
+      - section: "Introduction to R"
+        contents:
+          - href: Week02_IntrotoR/Week2_IntrotoR.qmd
+            text: Introduction to R
+          - href: Week02_IntrotoR/Week2_Vectors.qmd
+            text: Vectors
+          - href: Week02_IntrotoR/Week2_Assignment.qmd
+            text: Assignment
+      - section: "Data Tables"
+        contents:
+          - href: Week03_DataTables/Week3_DataTables.qmd
+            text: Data Tables
+          - href: Week03_DataTables/Week3_Pipes.qmd
+            text: Pipes
+          - href: Week03_DataTables/Week3_Assignment.qmd
+            text: Assignment
+      - section: "Groups and Joins"
+        contents:
+          - href: Week04_Groups_and_Joins/Week4_Vectors_and_DataFames.qmd
+            text: Vectors and Data Frames
+          - href: Week04_Groups_and_Joins/Week4_Aggregation.qmd
+            text: Aggregation
+          - href: Week04_Groups_and_Joins/Week4_Binds_Joins.qmd
+            text: Joins and Binds
+          - href: Week04_Groups_and_Joins/Week4_Assignment.qmd
+            text: Assignment
+      - section: "Data Visualization"
+        contents:
+          - href: Week05_DataViz/Week5_DataVisualization.qmd
+            text: Data Visualization
+          - href: Week05_DataViz/Week5_Assignment.qmd
+            text: Assignment
+      - section: "Tidy Data"
+        contents:
+          - href: Week06_TidyData/Week6_TidyData.qmd
+            text: Tidy Data
+          - href: Week06_TidyData/Week6_Assignment.qmd
+            text: Assignment
+      - section: "Dates and Strings"
+        contents:
+          - href: Week07_DatesandStrings/Week14_DatesandTimes.qmd
+            text: Dates and Times
+          - href: Week07_DatesandStrings/Week14_Strings.qmd
+            text: Strings
+          - href: Week07_DatesandStrings/Week14_Assignment.qmd
+            text: Assignment
+      - section: "Solving Bigger Problems"
+        contents:
+          - href: Week08_SolvingBiggerProblems/Week7_SolvingBiggerProblems.qmd
+            text: Solving Bigger Problems
+          - href: Week08_SolvingBiggerProblems/Week7_Assignment.qmd
+            text: Assignment
+      - section: "Reproducibility"
+        contents:
+          - href: Week08_Reproducibility/scripts/Week8_Reproducibility.qmd
+            text: Reproducibility
+          - href: Week08_Reproducibility/scripts/filepaths.qmd
+            text: File Paths
+          - href: Week08_Reproducibility/scripts/Week8_Assignment.qmd
+            text: Assignment
+      - section: "Version Control"
+        contents:
+          - href: Week10_VersionControl/code/Week10_VersionControl.qmd
+            text: Version Control
+          - href: Week10_VersionControl/code/Week10_Assignment.qmd
+            text: Assignment
+      - section: "Functions"
+        contents:
+          - href: Week11_Functions/Week11_Functions.qmd
+            text: Functions
+          - href: Week11_Functions/Week11_Assignment.qmd
+            text: Assignment
+      - section: "Making Choices"
+        contents:
+          - href: Week12_MakingChoices/Week12_MakingChoices.qmd
+            text: Making Choices
+          - href: Week12_MakingChoices/Week12_Assignment.qmd
+            text: Assignment
+      - section: "Iteration"
+        contents:
+          - href: Week13_Iteration/scripts/Week13_Iteration.qmd
+            text: Iteration
+          - href: Week13_Iteration/scripts/Week13_Assignment.qmd
+            text: Assignment
+      - section: "Geospatial Data"
+        contents:
+          - href: Week14_GeospatialData/Week14_GeospatialData.qmd
+            text: Geospatial Data
+          - href: Week14_GeospatialData/Week9_Assignment.qmd
+            text: Assignment
+  page-footer:
+    center: "Built from [DataWrangling](https://github.com/bleds22e/DataWrangling) · commit: $DATAWRANGLING_SHA"
+
+format:
+  html:
+    theme: cosmo
+    toc: true

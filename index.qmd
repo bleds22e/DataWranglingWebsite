@@ -1,0 +1,27 @@
+---
+title: "Data Wrangling in R for Ecologists"
+---
+
+Welcome to **RNR 437/537: Data Wrangling in R for Ecologists**.
+
+This site contains course lessons and assignments organized by topic. Use the sidebar to navigate between topics. Each topic includes a lesson and a corresponding assignment; assignment pages include a link to the answer key.
+
+## Topics
+
+This course covers the following topics in order:
+
+1. Spreadsheets
+2. Introduction to R
+3. Vectors
+4. Data Tables and Pipes
+5. Groups and Joins
+6. Data Visualization
+7. Tidy Data
+8. Dates and Strings
+9. Solving Bigger Problems
+10. Reproducibility and File Paths
+11. Version Control
+12. Functions
+13. Making Choices
+14. Iteration
+15. Geospatial Data
