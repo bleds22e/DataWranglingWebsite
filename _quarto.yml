@@ -1,5 +1,8 @@
 project:
   type: website
+  render:
+    - "*.qmd"
+    - "**/*.qmd"
 
 website:
   title: "Data Wrangling in R for Ecologists"
