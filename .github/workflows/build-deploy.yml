@@ -75,7 +75,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: r-pkgs-v1
+          key: r-pkgs-v2
           restore-keys: r-pkgs-
 
       - name: Install R packages
