@@ -34,15 +34,33 @@ jobs:
 
       - name: Copy course files from DataWrangling
         run: |
-          for dir in datawrangling/Week*/; do
-            cp -r "$dir" .
+          # Copy only the .qmd files needed for the website
+          find datawrangling/Week*/ \( \
+            -name "*_Instructor.qmd" \
+            -o -name "*_Assignment.qmd" \
+            -o -name "*_Assignment_AnswerKey.qmd" \
+            -o -name "*_Assignment_key.qmd" \
+            -o -name "filepaths.qmd" \
+            -o -name "Week10_VersionControl.qmd" \
+          \) | while IFS= read -r f; do
+            rel="${f#datawrangling/}"
+            mkdir -p "$(dirname "$rel")"
+            cp "$f" "$rel"
+          done
+          # Copy all data and image assets
+          find datawrangling/Week*/ \( \
+            -name "*.csv" -o -name "*.txt" \
+            -o -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" \
+            -o -name "*.tif" -o -name "*.tiff" \
+            -o -name "*.shp" -o -name "*.dbf" -o -name "*.prj" -o -name "*.shx" \
+            -o -name "*.R" \
+          \) | while IFS= read -r f; do
+            rel="${f#datawrangling/}"
+            mkdir -p "$(dirname "$rel")"
+            cp "$f" "$rel"
           done
           cp -r datawrangling/PeerCodeReview . 2>/dev/null || true
-
-      - name: Remove .Rmd files
-        run: |
           rm -rf datawrangling
-          find . -name "*.Rmd" -delete
 
       - name: Patch assignment files (add eval:false to YAML)
         run: |

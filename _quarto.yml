@@ -1,8 +1,13 @@
 project:
   type: website
   render:
-    - "*.qmd"
-    - "**/*.qmd"
+    - "index.qmd"
+    - "**/*_Instructor.qmd"
+    - "**/*_Assignment.qmd"
+    - "**/*_Assignment_AnswerKey.qmd"
+    - "**/*_Assignment_key.qmd"
+    - "Week08_Reproducibility/scripts/filepaths.qmd"
+    - "Week10_VersionControl/code/Week10_VersionControl.qmd"
 
 website:
   title: "Data Wrangling in R for Ecologists"
