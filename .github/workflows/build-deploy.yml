@@ -40,7 +40,9 @@ jobs:
           cp -r datawrangling/PeerCodeReview . 2>/dev/null || true
 
       - name: Remove .Rmd files
-        run: find . -name "*.Rmd" -not -path "./datawrangling/*" -delete
+        run: |
+          rm -rf datawrangling
+          find . -name "*.Rmd" -delete
 
       - name: Patch assignment files (add eval:false to YAML)
         run: |
