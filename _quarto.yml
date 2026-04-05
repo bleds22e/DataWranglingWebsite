@@ -20,59 +20,59 @@ website:
             text: Spreadsheets
       - section: "Introduction to R"
         contents:
-          - href: Week02_IntrotoR/Week2_IntrotoR.qmd
+          - href: Week02_IntrotoR/Week2_IntrotoR_Instructor.qmd
             text: Introduction to R
-          - href: Week02_IntrotoR/Week2_Vectors.qmd
+          - href: Week02_IntrotoR/Week2_Vectors_Instructor.qmd
             text: Vectors
           - href: Week02_IntrotoR/Week2_Assignment.qmd
             text: Assignment
       - section: "Data Tables"
         contents:
-          - href: Week03_DataTables/Week3_DataTables.qmd
+          - href: Week03_DataTables/Week3_DataTables_Instructor.qmd
             text: Data Tables
-          - href: Week03_DataTables/Week3_Pipes.qmd
+          - href: Week03_DataTables/Week3_Pipes_Instructor.qmd
             text: Pipes
           - href: Week03_DataTables/Week3_Assignment.qmd
             text: Assignment
       - section: "Groups and Joins"
         contents:
-          - href: Week04_Groups_and_Joins/Week4_Vectors_and_DataFames.qmd
+          - href: Week04_Groups_and_Joins/Week4_Vectors_and_DataFames_Instructor.qmd
             text: Vectors and Data Frames
-          - href: Week04_Groups_and_Joins/Week4_Aggregation.qmd
+          - href: Week04_Groups_and_Joins/Week4_Aggregation_Instructor.qmd
             text: Aggregation
-          - href: Week04_Groups_and_Joins/Week4_Binds_Joins.qmd
+          - href: Week04_Groups_and_Joins/Week4_Joins_Instructor.qmd
             text: Joins and Binds
           - href: Week04_Groups_and_Joins/Week4_Assignment.qmd
             text: Assignment
       - section: "Data Visualization"
         contents:
-          - href: Week05_DataViz/Week5_DataVisualization.qmd
+          - href: Week05_DataViz/Week5_DataVisualization_Instructor.qmd
             text: Data Visualization
           - href: Week05_DataViz/Week5_Assignment.qmd
             text: Assignment
       - section: "Tidy Data"
         contents:
-          - href: Week06_TidyData/Week6_TidyData.qmd
+          - href: Week06_TidyData/Week6_TidyData_Instructor.qmd
             text: Tidy Data
           - href: Week06_TidyData/Week6_Assignment.qmd
             text: Assignment
       - section: "Dates and Strings"
         contents:
-          - href: Week07_DatesandStrings/Week14_DatesandTimes.qmd
+          - href: Week07_DatesandStrings/Week14_DatesandTimes_Instructor.qmd
             text: Dates and Times
-          - href: Week07_DatesandStrings/Week14_Strings.qmd
+          - href: Week07_DatesandStrings/Week14_Strings_Instructor.qmd
             text: Strings
           - href: Week07_DatesandStrings/Week14_Assignment.qmd
             text: Assignment
       - section: "Solving Bigger Problems"
         contents:
-          - href: Week08_SolvingBiggerProblems/Week7_SolvingBiggerProblems.qmd
+          - href: Week08_SolvingBiggerProblems/Week7_SolvingBiggerProblems_Instructor.qmd
             text: Solving Bigger Problems
           - href: Week08_SolvingBiggerProblems/Week7_Assignment.qmd
             text: Assignment
       - section: "Reproducibility"
         contents:
-          - href: Week08_Reproducibility/scripts/Week8_Reproducibility.qmd
+          - href: Week08_Reproducibility/scripts/Week8_Reproducibility_Instructor.qmd
             text: Reproducibility
           - href: Week08_Reproducibility/scripts/filepaths.qmd
             text: File Paths
@@ -86,25 +86,25 @@ website:
             text: Assignment
       - section: "Functions"
         contents:
-          - href: Week11_Functions/Week11_Functions.qmd
+          - href: Week11_Functions/Week11_Functions_Instructor.qmd
             text: Functions
           - href: Week11_Functions/Week11_Assignment.qmd
             text: Assignment
       - section: "Making Choices"
         contents:
-          - href: Week12_MakingChoices/Week12_MakingChoices.qmd
+          - href: Week12_MakingChoices/Week12_MakingChoices_Instructor.qmd
             text: Making Choices
           - href: Week12_MakingChoices/Week12_Assignment.qmd
             text: Assignment
       - section: "Iteration"
         contents:
-          - href: Week13_Iteration/scripts/Week13_Iteration.qmd
+          - href: Week13_Iteration/scripts/Week13_Iteration_Instructor.qmd
             text: Iteration
           - href: Week13_Iteration/scripts/Week13_Assignment.qmd
             text: Assignment
       - section: "Geospatial Data"
         contents:
-          - href: Week14_GeospatialData/Week14_GeospatialData.qmd
+          - href: Week14_GeospatialData/Week14_GeospatialData_Instructor.qmd
             text: Geospatial Data
           - href: Week14_GeospatialData/Week9_Assignment.qmd
             text: Assignment
