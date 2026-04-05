@@ -81,7 +81,7 @@ jobs:
       - name: Install R packages
         run: |
           Rscript -e 'install.packages(c(
-            "tidyverse", "terra", "lterdatasampler",
+            "tidyverse", "terra", "lterdatasampler", "portalr",
             "knitr", "rmarkdown"
           ), repos = "https://cloud.r-project.org")'
 
