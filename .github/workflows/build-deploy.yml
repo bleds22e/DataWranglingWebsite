@@ -62,15 +62,29 @@ jobs:
           cp -r datawrangling/PeerCodeReview . 2>/dev/null || true
           rm -rf datawrangling
 
-      - name: Patch assignment files (add eval:false to YAML)
+      - name: Patch qmd files (strip format, add eval:false to assignments)
         run: |
           python3 - <<'PYEOF'
           import re, glob
 
-          pattern = re.compile(r'^(---\n)(.*?)(---)', re.DOTALL)
+          yaml_pattern = re.compile(r'^(---\n)(.*?)(---)', re.DOTALL)
 
+          # Strip 'format:' from all qmd files so they inherit HTML from _quarto.yml
+          for path in glob.glob('**/*.qmd', recursive=True):
+              if path == 'index.qmd':
+                  continue
+              text = open(path).read()
+              def strip_format(m):
+                  header = re.sub(r'^format:.*\n', '', m.group(2), flags=re.MULTILINE)
+                  return m.group(1) + header + m.group(3)
+              patched = yaml_pattern.sub(strip_format, text, count=1)
+              if patched != text:
+                  open(path, 'w').write(patched)
+                  print(f'Stripped format: {path}')
+
+          # Add eval:false to assignment scaffold files
           for path in glob.glob('**/Week*_Assignment.qmd', recursive=True):
-              if 'AnswerKey' in path:
+              if 'AnswerKey' in path or '_key' in path:
                   continue
               text = open(path).read()
               def inject(m):
@@ -78,10 +92,10 @@ jobs:
                   if 'eval: false' in header:
                       return m.group(0)
                   return m.group(1) + header + 'execute:\n  eval: false\n' + m.group(3)
-              patched = pattern.sub(inject, text, count=1)
+              patched = yaml_pattern.sub(inject, text, count=1)
               if patched != text:
                   open(path, 'w').write(patched)
-                  print(f'Patched: {path}')
+                  print(f'Patched eval:false: {path}')
           PYEOF
 
       - name: Install libcurl system dependency
