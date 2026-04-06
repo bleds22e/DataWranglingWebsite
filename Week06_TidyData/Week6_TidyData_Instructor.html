@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ellen Bledsoe">
+<meta name="dcterms.date" content="2026-04-06">
+
+<title>Week 6: Making Untidy Data Tidy – Data Wrangling in R for Ecologists</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-a9a80988417b6cbb42c2582d7cc7b81b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Data Wrangling in R for Ecologists</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Week06_TidyData/Week6_TidyData_Instructor.html">Tidy Data</a></li><li class="breadcrumb-item"><a href="../Week06_TidyData/Week6_TidyData_Instructor.html">Tidy Data</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Spreadsheets</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week01_Spreadsheets/Week1_Spreadsheets.qmd" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Spreadsheets</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Introduction to R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week02_IntrotoR/Week2_IntrotoR_Instructor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week02_IntrotoR/Week2_Vectors_Instructor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week02_IntrotoR/Week2_Assignment.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assignment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Data Tables</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week03_DataTables/Week3_DataTables_Instructor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Tables</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week03_DataTables/Week3_Pipes_Instructor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pipes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week03_DataTables/Week3_Assignment.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assignment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Groups and Joins</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week04_Groups_and_Joins/Week4_Vectors_and_DataFames_Instructor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Vectors and Data Frames</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week04_Groups_and_Joins/Week4_Aggregation_Instructor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aggregation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week04_Groups_and_Joins/Week4_Joins_Instructor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Joins and Binds</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week04_Groups_and_Joins/Week4_Assignment.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assignment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Data Visualization</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week05_DataViz/Week5_DataVisualization_Instructor.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Visualization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week05_DataViz/Week5_Assignment.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assignment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tidy Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week06_TidyData/Week6_TidyData_Instructor.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Tidy Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week06_TidyData/Week6_Assignment.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assignment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">Dates and Strings</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week07_DatesandStrings/Week14_DatesandTimes_Instructor.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dates and Times</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week07_DatesandStrings/Week14_Strings_Instructor.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Strings</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week07_DatesandStrings/Week14_Assignment.md" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assignment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
+ <span class="menu-text">Solving Bigger Problems</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week08_SolvingBiggerProblems/Week7_SolvingBiggerProblems_Instructor.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Solving Bigger Problems</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week08_SolvingBiggerProblems/Week7_Assignment.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assignment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true">
+ <span class="menu-text">Reproducibility</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week08_Reproducibility/scripts/Week8_Reproducibility_Instructor.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reproducibility</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week08_Reproducibility/scripts/filepaths.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">File Paths</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week08_Reproducibility/scripts/Week8_Assignment.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assignment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true">
+ <span class="menu-text">Version Control</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week10_VersionControl/code/Week10_VersionControl.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Version Control</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week10_VersionControl/code/Week10_Assignment.md" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assignment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true">
+ <span class="menu-text">Functions</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week11_Functions/Week11_Functions_Instructor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Functions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week11_Functions/Week11_Assignment.md" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assignment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true">
+ <span class="menu-text">Making Choices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week12_MakingChoices/Week12_MakingChoices_Instructor.md" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Making Choices</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week12_MakingChoices/Week12_Assignment.md" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assignment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true">
+ <span class="menu-text">Iteration</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week13_Iteration/scripts/Week13_Iteration_Instructor.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week13_Iteration/scripts/Week13_Assignment.md" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assignment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="true">
+ <span class="menu-text">Geospatial Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week14_GeospatialData/Week14_GeospatialData_Instructor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Geospatial Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Week14_GeospatialData/Week9_Assignment.docx" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Assignment</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#making-untidy-data-tidy" id="toc-making-untidy-data-tidy" class="nav-link active" data-scroll-target="#making-untidy-data-tidy">Making Untidy Data Tidy</a>
+  <ul class="collapse">
+  <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up">Set-up</a>
+  <ul class="collapse">
+  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages">Packages</a></li>
+  <li><a href="#file-paths" id="toc-file-paths" class="nav-link" data-scroll-target="#file-paths">File Paths</a></li>
+  <li><a href="#data-structure" id="toc-data-structure" class="nav-link" data-scroll-target="#data-structure">Data Structure</a></li>
+  </ul></li>
+  <li><a href="#renaming-columns" id="toc-renaming-columns" class="nav-link" data-scroll-target="#renaming-columns">Renaming Columns</a></li>
+  <li><a href="#completing-data-with-gaps" id="toc-completing-data-with-gaps" class="nav-link" data-scroll-target="#completing-data-with-gaps">Completing Data with Gaps</a></li>
+  <li><a href="#wide-data-vs.-long-data" id="toc-wide-data-vs.-long-data" class="nav-link" data-scroll-target="#wide-data-vs.-long-data">Wide Data vs.&nbsp;Long Data</a></li>
+  <li><a href="#pivot-longer" id="toc-pivot-longer" class="nav-link" data-scroll-target="#pivot-longer">Pivot Longer</a>
+  <ul class="collapse">
+  <li><a href="#replace-values-with-na" id="toc-replace-values-with-na" class="nav-link" data-scroll-target="#replace-values-with-na">Replace Values with <code>NA</code></a></li>
+  <li><a href="#drop-rows-with-na-values" id="toc-drop-rows-with-na-values" class="nav-link" data-scroll-target="#drop-rows-with-na-values">Drop Rows with <code>NA</code> Values</a></li>
+  <li><a href="#lets-practice" id="toc-lets-practice" class="nav-link" data-scroll-target="#lets-practice">Let’s Practice!</a></li>
+  <li><a href="#extract-values-from-a-column" id="toc-extract-values-from-a-column" class="nav-link" data-scroll-target="#extract-values-from-a-column"><code>extract()</code> Values from a Column</a></li>
+  <li><a href="#separate-a-column-into-multiple-columns" id="toc-separate-a-column-into-multiple-columns" class="nav-link" data-scroll-target="#separate-a-column-into-multiple-columns"><code>separate()</code> a Column into Multiple Columns</a></li>
+  </ul></li>
+  <li><a href="#pivot-wider" id="toc-pivot-wider" class="nav-link" data-scroll-target="#pivot-wider">Pivot Wider</a>
+  <ul class="collapse">
+  <li><a href="#lets-practice-1" id="toc-lets-practice-1" class="nav-link" data-scroll-target="#lets-practice-1">Let’s Practice!</a></li>
+  <li><a href="#unite-columns-into-one" id="toc-unite-columns-into-one" class="nav-link" data-scroll-target="#unite-columns-into-one"><code>unite</code> Columns into One</a></li>
+  <li><a href="#replacing-values" id="toc-replacing-values" class="nav-link" data-scroll-target="#replacing-values">Replacing Values</a></li>
+  <li><a href="#pivot_wider" id="toc-pivot_wider" class="nav-link" data-scroll-target="#pivot_wider"><code>pivot_wider()</code></a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Week06_TidyData/Week6_TidyData_Instructor.html">Tidy Data</a></li><li class="breadcrumb-item"><a href="../Week06_TidyData/Week6_TidyData_Instructor.html">Tidy Data</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Week 6: Making Untidy Data Tidy</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Ellen Bledsoe </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 6, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="making-untidy-data-tidy" class="level1">
+<h1>Making Untidy Data Tidy</h1>
+<p>One major task of working with data (especially other people’s data!) is to tidy up the dataset so that we can successfully calculate our descriptive statistics with <code>group_by</code> and <code>summarize</code>, make our data visualizations with <code>ggplot2</code>, and eventually conduct our statistical analyses.</p>
+<p>This week’s lessons are all about ways to make untidy data tidy. First, let’s remind ourselves what out “tidy” data means.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/tidy_data.jpeg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:75.0%"></p>
+</figure>
+</div>
+<p>Unfortunately, a lot of existing data doesn’t follow these rules. The way in which datasets are untidy are always unique.</p>
+<p>However, to analyze the data, we typically need data to be in a tidy format. We can use a number of functions from the <code>tidyr</code> package in the <code>tidyverse</code> to help make the data tidy.</p>
+<section id="set-up" class="level2">
+<h2 class="anchored" data-anchor-id="set-up">Set-up</h2>
+<section id="packages" class="level3">
+<h3 class="anchored" data-anchor-id="packages">Packages</h3>
+<p>First, let’s load the <code>tidyverse</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.2.1     ✔ readr     2.2.0
+✔ forcats   1.0.1     ✔ stringr   1.6.0
+✔ ggplot2   4.0.2     ✔ tibble    3.3.1
+✔ lubridate 1.9.5     ✔ tidyr     1.3.2
+✔ purrr     1.2.1     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+</div>
+</section>
+<section id="file-paths" class="level3">
+<h3 class="anchored" data-anchor-id="file-paths">File Paths</h3>
+<p>Now, let’s read in our data. In this lesson, we are going to start incorporating a little bit of information about file paths into our work.</p>
+<p>So far, our data files have been in the same place (“working directory” or folder) as our Quarto files. Now, however, we have our data in a data folder.</p>
+<p>In order to tell R which data file we want to use (or where to save a data file we want to download), we have to point R to the exact location, which is no longer the same place as where our Quarto file is stored.</p>
+<p>To do so, we must tell our to first look in the <code>data</code> folder and <em>then</em> tell it which file we want to read in.</p>
+<p>The data file we are using is called <code>macroplot_data.txt</code>. When we open the file and take a look at it, we can see that it is tab-delimited, meaning we will want to use the <code>read_tsv()</code> function.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>macroplots <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"data/macroplot_data.txt"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 61965 Columns: 7
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: "\t"
+chr (2): Plot ID, Sp Code
+dbl (5): TreeGirth1, TreeGirth2, TreeGirth3, TreeGirth4, TreeGirth5
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view the dataframe</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>macroplots</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 61,965 × 7
+   `Plot ID` `Sp Code` TreeGirth1 TreeGirth2 TreeGirth3 TreeGirth4 TreeGirth5
+   &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+ 1 BSP70     Acaccaes          25          0          0          0          0
+ 2 BSP70     &lt;NA&gt;              25          0          0          0          0
+ 3 BSP70     &lt;NA&gt;              28          0          0          0          0
+ 4 BSP70     &lt;NA&gt;              38          0          0          0          0
+ 5 BSP70     &lt;NA&gt;              54          0          0          0          0
+ 6 BSP100    Acaccate          12          0          0          0          0
+ 7 BSP100    &lt;NA&gt;              13          0          0          0          0
+ 8 BSP100    &lt;NA&gt;              14          0          0          0          0
+ 9 BSP100    &lt;NA&gt;              15          0          0          0          0
+10 BSP100    &lt;NA&gt;              16          0          0          0          0
+# ℹ 61,955 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="data-structure" class="level3">
+<h3 class="anchored" data-anchor-id="data-structure">Data Structure</h3>
+<p>Let’s take a look. These data are tree girths from the Western Ghats, a mountainous region on the western edge of the Indian peninsula. This area is considered one of the top biodiversity hotspots in the world.</p>
+<p>Any time that a tree had more than one stem (trunk), the diameter of each stem got entered into a new column.</p>
+<p>Is this good data structure? Why or why not? What do we need to fix?</p>
+<p>Before we get started, let’s add a <code>treeid</code> column to our data frame using the <code>mutate</code> function from <code>dplyr</code>. We want one <code>treeid</code> for each row because there is one tree for each row. We can use the <code>.before</code> argument to determine where the new column in located in the data frame.</p>
+<p>Because the <code>Plot ID</code> column has a space in its name, we can’t reference it as we normally would. Instead, we can put backticks around it.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>macroplots <span class="ot">&lt;-</span> macroplots <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TreeID =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>(), <span class="at">.before =</span> <span class="st">`</span><span class="at">Plot ID</span><span class="st">`</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># use ` backticks ` around Plot ID because of the space</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the .before argument determines where the new column will be placed</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>macroplots</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 61,965 × 8
+   TreeID `Plot ID` `Sp Code` TreeGirth1 TreeGirth2 TreeGirth3 TreeGirth4
+    &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+ 1      1 BSP70     Acaccaes          25          0          0          0
+ 2      2 BSP70     &lt;NA&gt;              25          0          0          0
+ 3      3 BSP70     &lt;NA&gt;              28          0          0          0
+ 4      4 BSP70     &lt;NA&gt;              38          0          0          0
+ 5      5 BSP70     &lt;NA&gt;              54          0          0          0
+ 6      6 BSP100    Acaccate          12          0          0          0
+ 7      7 BSP100    &lt;NA&gt;              13          0          0          0
+ 8      8 BSP100    &lt;NA&gt;              14          0          0          0
+ 9      9 BSP100    &lt;NA&gt;              15          0          0          0
+10     10 BSP100    &lt;NA&gt;              16          0          0          0
+# ℹ 61,955 more rows
+# ℹ 1 more variable: TreeGirth5 &lt;dbl&gt;</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(macroplots)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+  TreeID `Plot ID` `Sp Code` TreeGirth1 TreeGirth2 TreeGirth3 TreeGirth4
+   &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;          &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+1  61960 BSP8      &lt;NA&gt;              12          0          0          0
+2  61961 BSP8      &lt;NA&gt;              16          0          0          0
+3  61962 BSP8      &lt;NA&gt;              32         24         21          0
+4  61963 BSP8      &lt;NA&gt;              33          0          0          0
+5  61964 BSP8      &lt;NA&gt;              41          0          0          0
+6  61965 BSP8      &lt;NA&gt;              52         39          0          0
+# ℹ 1 more variable: TreeGirth5 &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="renaming-columns" class="level2">
+<h2 class="anchored" data-anchor-id="renaming-columns">Renaming Columns</h2>
+<p>After a while, putting backticks around column names is going to get tedious. Thankfully, the <code>tidyverse</code> has a helpful function for renaming columns.</p>
+<p>The argument in <code>rename()</code> is the new name of the column equal to the old name.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>macroplots <span class="ot">&lt;-</span> macroplots <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">PlotID =</span> <span class="st">`</span><span class="at">Plot ID</span><span class="st">`</span>, <span class="at">SpCode =</span> <span class="st">`</span><span class="at">Sp Code</span><span class="st">`</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(macroplots)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+  TreeID PlotID SpCode   TreeGirth1 TreeGirth2 TreeGirth3 TreeGirth4 TreeGirth5
+   &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+1      1 BSP70  Acaccaes         25          0          0          0          0
+2      2 BSP70  &lt;NA&gt;             25          0          0          0          0
+3      3 BSP70  &lt;NA&gt;             28          0          0          0          0
+4      4 BSP70  &lt;NA&gt;             38          0          0          0          0
+5      5 BSP70  &lt;NA&gt;             54          0          0          0          0
+6      6 BSP100 Acaccate         12          0          0          0          0</code></pre>
+</div>
+</div>
+<p>That is much better!</p>
+</section>
+<section id="completing-data-with-gaps" class="level2">
+<h2 class="anchored" data-anchor-id="completing-data-with-gaps">Completing Data with Gaps</h2>
+<p>When recording data, people might write out a value once and then leave the following rows blank, assuming that all of the following rows are the same value until a new value is present.</p>
+<p>This is human-readable but not computer-readable.</p>
+<p>We can fill in these gaps using the <code>fill()</code> function. The default direction is “down,” but other directions are possible.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>macroplots <span class="ot">&lt;-</span> macroplots <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fill</span>(SpCode)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(macroplots)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+  TreeID PlotID SpCode   TreeGirth1 TreeGirth2 TreeGirth3 TreeGirth4 TreeGirth5
+   &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+1      1 BSP70  Acaccaes         25          0          0          0          0
+2      2 BSP70  Acaccaes         25          0          0          0          0
+3      3 BSP70  Acaccaes         28          0          0          0          0
+4      4 BSP70  Acaccaes         38          0          0          0          0
+5      5 BSP70  Acaccaes         54          0          0          0          0
+6      6 BSP100 Acaccate         12          0          0          0          0</code></pre>
+</div>
+</div>
+</section>
+<section id="wide-data-vs.-long-data" class="level2">
+<h2 class="anchored" data-anchor-id="wide-data-vs.-long-data">Wide Data vs.&nbsp;Long Data</h2>
+<p>Data are often structured in a way that doesn’t allow us to (easily) perform calculations or plot the data. We, therefore, need to wrangle data between “wide” format and “long format” to get the data in a structure that better serves our purposes.</p>
+<p>One format isn’t necessary better than the other in terms of “tidy” data, although you would often hear people use tidy data and long format data interchangeably. There are some instances where the “longest” form of the data is not actually considered tidy data.</p>
+<p>Here, we are going to focus on converting between the types using two functions from the <code>tidyr</code> package (part of the <code>tidyverse</code>, of course!): <code>pivot_longer()</code> and <code>pivot_wider()</code>.</p>
+<p>Like with the <code>join</code> functions, visualizing how these functions work takes a bit of practice. For GIFs demonstrating them, head over to the trusty <a href="https://www.garrickadenbuie.com/project/tidyexplain/#tidy-data">tidyexplain</a> site.</p>
+<p><strong>Wide Data</strong></p>
+<p>In this example of wide data, the data table has one row per tree species with columns for each site.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/wide_data.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
+</figure>
+</div>
+<p><strong>Long Data</strong></p>
+<p>In this example of long data, the data table has one row per tree species per site, and columns represent unique variables. In this example, the long format is considered tidy data.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/long_data.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
+</figure>
+</div>
+<p>One common issue with wide data is that data is spread over multiple columns that should be in one. For example, in the tables above, the “Sites” as column names are violating the rule of not having data in column names. Instead, that data should be in one column, like in the long data.</p>
+<p>To get the data in this form, we can use a function from <code>tidyr</code> called <code>pivot_longer</code>.</p>
+</section>
+<section id="pivot-longer" class="level2">
+<h2 class="anchored" data-anchor-id="pivot-longer">Pivot Longer</h2>
+<p>The <code>pivot_longer()</code> function takes the following arguments (as well as many other optional arguments). This function was previously called <code>spread()</code>, which you might still see in other people’s code sometimes.</p>
+<ul>
+<li>the data frame</li>
+<li>columns to include (or not include)</li>
+<li><code>names_to</code>: the name of the new column to put the previous column names in</li>
+<li><code>values_to</code>: the name of the new column to put the values from the cells in</li>
+</ul>
+<p>Any redundant or unnecessary columns will be automatically removed.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>macro_long <span class="ot">&lt;-</span> macroplots <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(TreeGirth1<span class="sc">:</span>TreeGirth5, <span class="co"># columns to include in the pivot</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"Stem"</span>,     <span class="co"># name of new column to hold previous column names</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"Girth"</span>)   <span class="co"># name of new column to hold values from cells</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>macro_long</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 309,825 × 5
+   TreeID PlotID SpCode   Stem       Girth
+    &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt;
+ 1      1 BSP70  Acaccaes TreeGirth1    25
+ 2      1 BSP70  Acaccaes TreeGirth2     0
+ 3      1 BSP70  Acaccaes TreeGirth3     0
+ 4      1 BSP70  Acaccaes TreeGirth4     0
+ 5      1 BSP70  Acaccaes TreeGirth5     0
+ 6      2 BSP70  Acaccaes TreeGirth1    25
+ 7      2 BSP70  Acaccaes TreeGirth2     0
+ 8      2 BSP70  Acaccaes TreeGirth3     0
+ 9      2 BSP70  Acaccaes TreeGirth4     0
+10      2 BSP70  Acaccaes TreeGirth5     0
+# ℹ 309,815 more rows</code></pre>
+</div>
+</div>
+<p>As a reminder, the colon specifies all columns starting at <code>TreeGirth1</code> and ending at <code>TreeGirth5</code></p>
+<section id="replace-values-with-na" class="level3">
+<h3 class="anchored" data-anchor-id="replace-values-with-na">Replace Values with <code>NA</code></h3>
+<p>As you might have noticed, there are still 0s where there were no stems. We probably don’t want those zeros to still be there. Instead, we might want them to be <code>NA</code> values.</p>
+<p>To do so, we can use a function (from <code>dplyr</code>) called <code>na_if</code>. This function allows us to replace certain values with <code>NA</code>. We can use this function within a <code>mutate</code> function.</p>
+<p>The arguments in <code>na_if</code> are the vector (column) you want the values replaced in and the value to be replaced.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>macro_long <span class="ot">&lt;-</span> macro_long <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Girth =</span> <span class="fu">na_if</span>(Girth, <span class="dv">0</span>))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(macro_long)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  TreeID PlotID SpCode   Stem       Girth
+   &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt;
+1      1 BSP70  Acaccaes TreeGirth1    25
+2      1 BSP70  Acaccaes TreeGirth2    NA
+3      1 BSP70  Acaccaes TreeGirth3    NA
+4      1 BSP70  Acaccaes TreeGirth4    NA
+5      1 BSP70  Acaccaes TreeGirth5    NA
+6      2 BSP70  Acaccaes TreeGirth1    25</code></pre>
+</div>
+</div>
+</section>
+<section id="drop-rows-with-na-values" class="level3">
+<h3 class="anchored" data-anchor-id="drop-rows-with-na-values">Drop Rows with <code>NA</code> Values</h3>
+<p>Often, we might want to remove these rows altogether. To remove rows that have <code>NA</code> values in a specific column, we could use the <code>filter</code> function and <code>!is.na()</code>, as we have in the past. Alternatively, we could use the <code>drop_na()</code> function, which does the same thing.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>macro_long <span class="ot">&lt;-</span> macro_long <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(Girth)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(macro_long)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  TreeID PlotID SpCode   Stem       Girth
+   &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt;
+1      1 BSP70  Acaccaes TreeGirth1    25
+2      2 BSP70  Acaccaes TreeGirth1    25
+3      3 BSP70  Acaccaes TreeGirth1    28
+4      4 BSP70  Acaccaes TreeGirth1    38
+5      5 BSP70  Acaccaes TreeGirth1    54
+6      6 BSP100 Acaccate TreeGirth1    12</code></pre>
+</div>
+</div>
+</section>
+<section id="lets-practice" class="level3">
+<h3 class="anchored" data-anchor-id="lets-practice">Let’s Practice!</h3>
+<p>In the assignment, work on Question 1a and 1b.</p>
+</section>
+<section id="extract-values-from-a-column" class="level3">
+<h3 class="anchored" data-anchor-id="extract-values-from-a-column"><code>extract()</code> Values from a Column</h3>
+<p>There are a number of ways that we can work with character strings, and we will cover many of those more in depth in another lesson. For now, we will stick to one helpful function called <code>extract()</code>.</p>
+<p>Let’s say we want the <code>Stem</code> column to have only the number of the stem (1-5) rather than “TreeGirth1”.</p>
+<p><code>extract()</code> will extract one or more values from a column. It uses something called “regular expressions.” We might get into details about regular expression later, but we won’t worry about them too much for now.</p>
+<p>The arguments for <code>extract</code> are:</p>
+<ul>
+<li>the data frame</li>
+<li>the name of the column from which we want to extract something</li>
+<li>the name(s) of the new column(s)</li>
+<li>the regular expression specifying what to extract (we will talk more about regular expressions later)</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>macro_long <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract</span>(Stem, <span class="st">"Stem"</span>, <span class="st">"TreeGirth(.)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 65,889 × 5
+   TreeID PlotID SpCode   Stem  Girth
+    &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt; &lt;dbl&gt;
+ 1      1 BSP70  Acaccaes 1        25
+ 2      2 BSP70  Acaccaes 1        25
+ 3      3 BSP70  Acaccaes 1        28
+ 4      4 BSP70  Acaccaes 1        38
+ 5      5 BSP70  Acaccaes 1        54
+ 6      6 BSP100 Acaccate 1        12
+ 7      7 BSP100 Acaccate 1        13
+ 8      8 BSP100 Acaccate 1        14
+ 9      9 BSP100 Acaccate 1        15
+10     10 BSP100 Acaccate 1        16
+# ℹ 65,879 more rows</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(macro_long)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  TreeID PlotID SpCode   Stem       Girth
+   &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt;
+1      1 BSP70  Acaccaes TreeGirth1    25
+2      2 BSP70  Acaccaes TreeGirth1    25
+3      3 BSP70  Acaccaes TreeGirth1    28
+4      4 BSP70  Acaccaes TreeGirth1    38
+5      5 BSP70  Acaccaes TreeGirth1    54
+6      6 BSP100 Acaccate TreeGirth1    12</code></pre>
+</div>
+</div>
+<p>Here, <code>TreeGirth.</code> means the phrase “TreeGirth” followed by a single value. The <code>()</code> indicate what part of this string to extract, so just the number at the end of the string.</p>
+<p>This gives us the result we want, with only the stem number in the <code>Stem</code> column.</p>
+<p>You may notice that this number is on the left side of the column, not the right. That’s because the number is still stored as a character, because it was extracted from a character string.</p>
+<p>To convert it to its actual data class (numeric), we can add the optional argument <code>convert = TRUE</code> to <code>extract</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>macro_long <span class="ot">&lt;-</span> macro_long <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract</span>(<span class="at">col =</span> Stem,              <span class="co"># column from which to extract values</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">into =</span> <span class="st">"Stem"</span>,           <span class="co"># name of column to put extracted values in</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">regex =</span> <span class="st">"TreeGirth(.)"</span>,  <span class="co"># "regular expression" for extracting values</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">convert =</span> <span class="cn">TRUE</span>)          <span class="co"># convert extracted values to their data class</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(macro_long)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  TreeID PlotID SpCode    Stem Girth
+   &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;int&gt; &lt;dbl&gt;
+1      1 BSP70  Acaccaes     1    25
+2      2 BSP70  Acaccaes     1    25
+3      3 BSP70  Acaccaes     1    28
+4      4 BSP70  Acaccaes     1    38
+5      5 BSP70  Acaccaes     1    54
+6      6 BSP100 Acaccate     1    12</code></pre>
+</div>
+</div>
+<p>Adding the <code>convert = TRUE</code> argument is a helpful addition when extracting numbers so you can then work with the column as numbers.</p>
+</section>
+<section id="separate-a-column-into-multiple-columns" class="level3">
+<h3 class="anchored" data-anchor-id="separate-a-column-into-multiple-columns"><code>separate()</code> a Column into Multiple Columns</h3>
+<p>In the <code>SpCode</code> column, the Genus and Species information for each tree are combined in a single column. If we want to group by genera, for example, having these data separated might be useful.</p>
+<p>We can do so using the <code>separate()</code> function, which takes the following arguments:</p>
+<ul>
+<li>the data frame</li>
+<li>the name of the column to separate (<code>col</code>)</li>
+<li>new column names (<code>into</code>)</li>
+<li>the separator value, character, or position (if character, it must be in quotation marks, e.g., “-”; <code>sep</code>)</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>macro_long <span class="ot">&lt;-</span> macro_long <span class="sc">%&gt;%</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(SpCode, <span class="fu">c</span>(<span class="st">"Genus"</span>, <span class="st">"Species"</span>), <span class="at">sep =</span> <span class="dv">4</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>macro_long</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 65,889 × 6
+   TreeID PlotID Genus Species  Stem Girth
+    &lt;int&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;int&gt; &lt;dbl&gt;
+ 1      1 BSP70  Acac  caes        1    25
+ 2      2 BSP70  Acac  caes        1    25
+ 3      3 BSP70  Acac  caes        1    28
+ 4      4 BSP70  Acac  caes        1    38
+ 5      5 BSP70  Acac  caes        1    54
+ 6      6 BSP100 Acac  cate        1    12
+ 7      7 BSP100 Acac  cate        1    13
+ 8      8 BSP100 Acac  cate        1    14
+ 9      9 BSP100 Acac  cate        1    15
+10     10 BSP100 Acac  cate        1    16
+# ℹ 65,879 more rows</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># if separated by a - or a space, put in quotation marks (e.g., "-")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="pivot-wider" class="level2">
+<h2 class="anchored" data-anchor-id="pivot-wider">Pivot Wider</h2>
+<p>Occasionally, we need to convert data the other way: from long to wide.</p>
+<p>For example, this is fairly common for analyses of community-level data. Many packages will want cross-tab (or wide) data, such as a site by species matrix.</p>
+<p>Let’s demonstrate with an example calculating the number of stems per species. First, we need to group and summarize the data.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>stem_counts <span class="ot">&lt;-</span> macro_long <span class="sc">%&gt;%</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(PlotID, Genus, Species) <span class="sc">%&gt;%</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">Count =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has regrouped the output.
+ℹ Summaries were computed grouped by PlotID, Genus, and Species.
+ℹ Output is grouped by PlotID and Genus.
+ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+ℹ Use `summarise(.by = c(PlotID, Genus, Species))` for per-operation grouping
+  (`?dplyr::dplyr_by`) instead.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(stem_counts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  PlotID Genus Species Count
+  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;int&gt;
+1 BSP1   Acac  sinu       20
+2 BSP1   Alan  salv        1
+3 BSP1   Albi  lebb        2
+4 BSP1   Albi  proc        2
+5 BSP1   Allo  cobb        6
+6 BSP1   Alse  seme       24</code></pre>
+</div>
+</div>
+<p>To get the site by species matrix, we need to make the dataset wider. Since the species ID will end up as column names, we need to bring the columns back together.</p>
+<section id="lets-practice-1" class="level3">
+<h3 class="anchored" data-anchor-id="lets-practice-1">Let’s Practice!</h3>
+<p>Work on Question 2 in the assignment.</p>
+</section>
+<section id="unite-columns-into-one" class="level3">
+<h3 class="anchored" data-anchor-id="unite-columns-into-one"><code>unite</code> Columns into One</h3>
+<p>To bring multiple columns together into one column, we use a function that does the opposite of <code>separate()</code>: <code>unite()</code>.</p>
+<p>The <code>unite()</code> function takes the following arguments:</p>
+<ul>
+<li>the data frame</li>
+<li>the name of the new column to hold the united date (<code>col</code>); this should be written in quotation marks</li>
+<li>the columns to be united</li>
+<li>the separator value, character, or position (<code>sep</code>)</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>stem_counts <span class="ot">&lt;-</span> stem_counts <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(<span class="st">"SpeciesID"</span>, Genus, Species, <span class="at">sep =</span> <span class="st">"_"</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(stem_counts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+  PlotID SpeciesID Count
+  &lt;chr&gt;  &lt;chr&gt;     &lt;int&gt;
+1 BSP1   Acac_sinu    20
+2 BSP1   Alan_salv     1
+3 BSP1   Albi_lebb     2
+4 BSP1   Albi_proc     2
+5 BSP1   Allo_cobb     6
+6 BSP1   Alse_seme    24</code></pre>
+</div>
+</div>
+<p>Work on Question 6.</p>
+</section>
+<section id="replacing-values" class="level3">
+<h3 class="anchored" data-anchor-id="replacing-values">Replacing Values</h3>
+<p>There is also one species code for unknown species. While in long format we would likely convert this to an <code>NA</code> value, because it will become a column name, we probably want to make it something interpretable.</p>
+<p>To do this, we can use a combination of the mutate function with the <code>replace</code> function. The <code>replace</code> function is part of the <code>base</code> package that comes build into R.</p>
+<p>The <code>replace</code> function, when used inside the <code>mutate</code> function, the arguments are:</p>
+<ul>
+<li>the name of the column</li>
+<li>the condition that, if met, means the value will be replaced</li>
+<li>the value to use as the replacement</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(stem_counts, SpeciesID <span class="sc">==</span> <span class="st">"UnID_"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 24 × 3
+   PlotID SpeciesID Count
+   &lt;chr&gt;  &lt;chr&gt;     &lt;int&gt;
+ 1 BSP1   UnID_         1
+ 2 BSP12  UnID_         3
+ 3 BSP15  UnID_         1
+ 4 BSP16  UnID_         3
+ 5 BSP18  UnID_         2
+ 6 BSP22  UnID_         1
+ 7 BSP24  UnID_         1
+ 8 BSP25  UnID_         4
+ 9 BSP27  UnID_        14
+10 BSP29  UnID_         1
+# ℹ 14 more rows</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>stem_counts <span class="ot">&lt;-</span> stem_counts <span class="sc">%&gt;%</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">SpeciesID =</span> <span class="fu">replace</span>(SpeciesID, SpeciesID <span class="sc">==</span> <span class="st">"UnID_"</span>, <span class="st">"Unknown"</span>))</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(stem_counts, SpeciesID <span class="sc">==</span> <span class="st">"UnID_"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 0 × 3
+# ℹ 3 variables: PlotID &lt;chr&gt;, SpeciesID &lt;chr&gt;, Count &lt;int&gt;</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(stem_counts, SpeciesID <span class="sc">==</span> <span class="st">"Unknown"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 24 × 3
+   PlotID SpeciesID Count
+   &lt;chr&gt;  &lt;chr&gt;     &lt;int&gt;
+ 1 BSP1   Unknown       1
+ 2 BSP12  Unknown       3
+ 3 BSP15  Unknown       1
+ 4 BSP16  Unknown       3
+ 5 BSP18  Unknown       2
+ 6 BSP22  Unknown       1
+ 7 BSP24  Unknown       1
+ 8 BSP25  Unknown       4
+ 9 BSP27  Unknown      14
+10 BSP29  Unknown       1
+# ℹ 14 more rows</code></pre>
+</div>
+</div>
+<p>Now we can go ahead and convert the data into a wider format.</p>
+</section>
+<section id="pivot_wider" class="level3">
+<h3 class="anchored" data-anchor-id="pivot_wider"><code>pivot_wider()</code></h3>
+<p>Using <code>pivot_wider()</code> will spread values from one column into column names. It will then fill in the appropriate values. It has many arguments, but these are the required ones:</p>
+<ul>
+<li>the data frame</li>
+<li>the name of column to use for column names</li>
+<li>the name of column that contains the values to fill in the cells</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>stem_counts <span class="sc">%&gt;%</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> SpeciesID, <span class="at">values_from =</span> Count)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 96 × 400
+   PlotID Acac_sinu Alan_salv Albi_lebb Albi_proc Allo_cobb Alse_seme Apor_lind
+   &lt;chr&gt;      &lt;int&gt;     &lt;int&gt;     &lt;int&gt;     &lt;int&gt;     &lt;int&gt;     &lt;int&gt;     &lt;int&gt;
+ 1 BSP1          20         1         2         2         6        24        82
+ 2 BSP10         NA        NA        NA        NA        11         4        11
+ 3 BSP100         1        NA        NA        NA        NA        NA        NA
+ 4 BSP101         1        14        NA        NA        NA         2        NA
+ 5 BSP102        NA        NA        NA        NA        NA        NA         1
+ 6 BSP104        NA        NA        NA        NA        NA        NA        NA
+ 7 BSP11         NA        NA        NA        NA        12        12       243
+ 8 BSP12         NA        NA        NA        NA        36         5       164
+ 9 BSP13         NA        NA        NA        NA        NA        10        31
+10 BSP14          2        NA        NA         1        NA        NA        NA
+# ℹ 86 more rows
+# ℹ 392 more variables: Arto_hete &lt;int&gt;, Arto_hirs &lt;int&gt;, Bauh_mala &lt;int&gt;,
+#   Bauh_phoe &lt;int&gt;, Bomb_ceib &lt;int&gt;, Buch_lanz &lt;int&gt;, Bute_mono &lt;int&gt;,
+#   Call_tome &lt;int&gt;, Caly_flor &lt;int&gt;, Cant_dico &lt;int&gt;, Care_arbo &lt;int&gt;,
+#   Cari_cara &lt;int&gt;, Cary_uren &lt;int&gt;, Cass_fist &lt;int&gt;, Catu_dume &lt;int&gt;,
+#   Cinn_veru &lt;int&gt;, Dalb_horr &lt;int&gt;, Dalb_lati &lt;int&gt;, Dill_pent &lt;int&gt;,
+#   Dios_mela &lt;int&gt;, Dios_mont &lt;int&gt;, Dios_sylv &lt;int&gt;, Elae_kolo &lt;int&gt;, …</code></pre>
+</div>
+</div>
+<p>Ok, that is a lot of <code>NA</code> values…</p>
+<p>In this case, it would likely make sense to replace these <code>NA</code> values with 0. We can do this in a couple ways. With <code>pivot_wider()</code>, there is an optional argument to specify what value to use for any empty cells after the conversion.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>stem_counts <span class="sc">%&gt;%</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> SpeciesID,</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> Count,</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_fill =</span> <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 96 × 400
+   PlotID Acac_sinu Alan_salv Albi_lebb Albi_proc Allo_cobb Alse_seme Apor_lind
+   &lt;chr&gt;      &lt;int&gt;     &lt;int&gt;     &lt;int&gt;     &lt;int&gt;     &lt;int&gt;     &lt;int&gt;     &lt;int&gt;
+ 1 BSP1          20         1         2         2         6        24        82
+ 2 BSP10          0         0         0         0        11         4        11
+ 3 BSP100         1         0         0         0         0         0         0
+ 4 BSP101         1        14         0         0         0         2         0
+ 5 BSP102         0         0         0         0         0         0         1
+ 6 BSP104         0         0         0         0         0         0         0
+ 7 BSP11          0         0         0         0        12        12       243
+ 8 BSP12          0         0         0         0        36         5       164
+ 9 BSP13          0         0         0         0         0        10        31
+10 BSP14          2         0         0         1         0         0         0
+# ℹ 86 more rows
+# ℹ 392 more variables: Arto_hete &lt;int&gt;, Arto_hirs &lt;int&gt;, Bauh_mala &lt;int&gt;,
+#   Bauh_phoe &lt;int&gt;, Bomb_ceib &lt;int&gt;, Buch_lanz &lt;int&gt;, Bute_mono &lt;int&gt;,
+#   Call_tome &lt;int&gt;, Caly_flor &lt;int&gt;, Cant_dico &lt;int&gt;, Care_arbo &lt;int&gt;,
+#   Cari_cara &lt;int&gt;, Cary_uren &lt;int&gt;, Cass_fist &lt;int&gt;, Catu_dume &lt;int&gt;,
+#   Cinn_veru &lt;int&gt;, Dalb_horr &lt;int&gt;, Dalb_lati &lt;int&gt;, Dill_pent &lt;int&gt;,
+#   Dios_mela &lt;int&gt;, Dios_mont &lt;int&gt;, Dios_sylv &lt;int&gt;, Elae_kolo &lt;int&gt;, …</code></pre>
+</div>
+</div>
+<p>You should now be able to complete the assignment!</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Built from <a href="https://github.com/bleds22e/DataWrangling">DataWrangling</a> · commit: $DATAWRANGLING_SHA</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
