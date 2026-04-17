@@ -214,3 +214,15 @@ Error: Process completed with exit code 128.
 ---
 
 there are a lot of untracked files, especially under _site
+
+---
+
+The Entire software is supposed to be tracking both the .entire and .claude folders, I think? If I give you the website for Entire, can you figure out the correct thing to do for those two folders?
+
+---
+
+https://docs.entire.io/introduction
+
+---
+
+commit both folders
