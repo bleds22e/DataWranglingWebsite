@@ -145,3 +145,7 @@ Is there a way to put the "Save to PDF" option directly below the "code" option 
 ---
 
 one more thing before we commit and push. On the homepage, instead of a list of the topics, can you create a table that has a column for the name of each topic, a column where you link to each lesson in that topic, and a column where you link to the assignment for that topic?
+
+---
+
+yes! do we need to commit and push changes to both repos?
