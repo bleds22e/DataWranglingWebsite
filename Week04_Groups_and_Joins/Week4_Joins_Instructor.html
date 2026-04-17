@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.36">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Ellen Bledsoe">
-<meta name="dcterms.date" content="2026-04-06">
+<meta name="dcterms.date" content="2026-04-17">
 
 <title>Week 4: Joins and Binds – Data Wrangling in R for Ecologists</title>
 <style>
@@ -76,10 +76,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-a9a80988417b6cbb42c2582d7cc7b81b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-84244d6014897f94eda7509784684fcb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -566,7 +566,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 6, 2026</p>
+      <p class="date">April 17, 2026</p>
     </div>
   </div>
   
@@ -662,14 +662,14 @@ dbl (7): record_id, month, day, year, plot_id, hindfoot_length, weight
 <pre><code>Warning in load_datafile(file.path("Rodents", "Portal_rodent.csv"), na.strings = "", : Proceeding to download data into specified path~</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Downloading version `6.62.0` of the data...</code></pre>
+<pre><code>Downloading version `6.67.0` of the data...</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Loading in data version 6.62.0</code></pre>
+<pre><code>Loading in data version 6.67.0</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>new_rodents</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 41,704 × 9
+<pre><code># A tibble: 41,756 × 9
    month   day  year plot_id species_id sex   hindfoot_length weight record_id
    &lt;int&gt; &lt;int&gt; &lt;int&gt;   &lt;int&gt; &lt;fct&gt;      &lt;chr&gt;           &lt;int&gt;  &lt;dbl&gt;     &lt;int&gt;
  1     2     1  2003       1 PB         M                  27     52     35550
@@ -682,7 +682,7 @@ dbl (7): record_id, month, day, year, plot_id, hindfoot_length, weight
  8     2     1  2003       1 DO         F                  35     59     35557
  9     2     1  2003       1 DO         F                  36     NA     35558
 10     2     1  2003       1 NA         F                  31    194     35559
-# ℹ 41,694 more rows</code></pre>
+# ℹ 41,746 more rows</code></pre>
 </div>
 </div>
 <p>When we look at the <code>new_rodents</code> data frame, we can see the same columns as in <code>surveys</code>, though the <code>record_id</code> column is at the end.</p>
@@ -708,12 +708,12 @@ dbl (7): record_id, month, day, year, plot_id, hindfoot_length, weight
 <pre><code># A tibble: 6 × 9
   record_id month   day  year plot_id species_id sex   hindfoot_length weight
       &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;           &lt;dbl&gt;  &lt;dbl&gt;
-1     77248    12     8  2024      14 DM         M                  35     36
-2     77249    12     8  2024      14 DM         F                  35     40
-3     77250    12     8  2024      17 DM         F                  35     36
-4     77251    12     8  2024      17 DM         F                  37     43
-5     77252    12     8  2024      17 DM         F                  36     50
-6     77253    12     8  2024      16 DM         F                  32     36</code></pre>
+1     77300     3     2  2025      13 DM         M                  38     45
+2     77301     3     2  2025      13 DM         M                  35     39
+3     77302     3     2  2025       7 DM         M                  34     38
+4     77303     3     2  2025       8 PB         F                  25     23
+5     77304     3     2  2025       8 PP         M                  21     14
+6     77305     3     2  2025      16 RO         F                  19      9</code></pre>
 </div>
 </div>
 <p>Notice that the data has been successfully rearranged to have the columns match up. This will only happen if the columns have the <em>exact</em> same names.</p>
