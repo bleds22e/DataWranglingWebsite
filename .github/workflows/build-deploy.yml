@@ -173,7 +173,7 @@ jobs:
           if [ -n "$SEMESTER" ]; then
             mkdir -p /tmp/gh-pages/$SEMESTER
             cp -r _site/. /tmp/gh-pages/$SEMESTER/
-            python3 << 'PYEOF'
+            python3 -c "
 import json, os
 path = '/tmp/gh-pages/versions.json'
 semester = os.environ['SEMESTER']
@@ -181,7 +181,7 @@ versions = json.load(open(path))
 if semester not in versions:
     versions.insert(0, semester)
 json.dump(versions, open(path, 'w'))
-PYEOF
+"
           fi
 
           # Commit and push
