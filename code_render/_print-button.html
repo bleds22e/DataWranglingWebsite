@@ -1,4 +1,6 @@
+<!-- Fallback fixed button (shown only if no code-tools dropdown is found) -->
 <button id="print-btn" onclick="window.print()" style="
+  display: none;
   position: fixed;
   bottom: 1.5rem;
   right: 1.5rem;
@@ -10,17 +12,61 @@
   font-size: 0.85rem;
   cursor: pointer;
   box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-">&#128438; Save as PDF</button>
+">PDF</button>
 
 <style>
 @media print {
-  button { display: none !important; }
+  #print-btn { display: none !important; }
 }
 </style>
 
 <script>
-var path = window.location.pathname;
-if (path === '/' || path.endsWith('/index.html')) {
-  document.getElementById('print-btn').style.display = 'none';
-}
+document.addEventListener('DOMContentLoaded', function () {
+  var path = window.location.pathname;
+  var isHome = path === '/' || path.endsWith('/index.html');
+  if (isHome) return;
+
+  // Find the code-tools dropdown menu using Bootstrap aria relationship
+  var btn = document.querySelector('[id$="-source-btn"]');
+  var menu = null;
+  if (btn) {
+    var menuId = (btn.getAttribute('aria-controls') || '').replace('#', '');
+    menu = menuId ? document.getElementById(menuId) : null;
+  }
+  // Fallback selectors
+  if (!menu) {
+    menu = document.getElementById('quarto-code-tools-source-menu') ||
+           document.querySelector('.quarto-code-tools-menu') ||
+           document.querySelector('.code-tools-menu');
+  }
+
+  if (menu) {
+    // Add a divider then a PDF item into the dropdown
+    var isUl = menu.tagName === 'UL';
+
+    var dividerEl = document.createElement(isUl ? 'li' : 'div');
+    dividerEl.innerHTML = '<hr class="dropdown-divider">';
+    menu.appendChild(dividerEl);
+
+    var link = document.createElement('a');
+    link.className = 'dropdown-item';
+    link.href = '#';
+    link.innerHTML = '<i class="bi bi-file-pdf"></i> PDF';
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      window.print();
+    });
+
+    if (isUl) {
+      var li = document.createElement('li');
+      li.appendChild(link);
+      menu.appendChild(li);
+    } else {
+      menu.appendChild(link);
+    }
+  } else {
+    // No dropdown found — show the fallback fixed button
+    document.getElementById('print-btn').style.display = '';
+  }
+});
 </script>
