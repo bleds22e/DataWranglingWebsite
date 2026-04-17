@@ -173,3 +173,10 @@ I already corrected you--the git push origin spring-2025 command is not correct
 ---
 
 most recent github actions have failed
+
+---
+
+Annotations
+1 error
+Invalid workflow file: .github/workflows/build-deploy.yml#L177
+You have an error in your yaml syntax on line 177
