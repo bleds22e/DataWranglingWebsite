@@ -1,0 +1,147 @@
+entire
+
+---
+
+is entire enabled right now?
+
+---
+
+I want to make downloading the quarto files that create each lesson and assignment available for download via a button
+
+---
+
+what about downloading as a PDF file?
+
+---
+
+what is the lighter approach
+
+---
+
+browser print seems fine
+
+---
+
+for each assignment, can we remove or hide the line that says "Due Date" and the subsequent line with the date? these make sense for the teaching repo but don't make sense to have on the website
+
+---
+
+here is the repo
+
+---
+
+https://github.com/bleds22e/DataWrangling
+
+---
+
+Can we have those lines not be part of the html print or displayed on the website?
+
+---
+
+Can we remove those lines from the .qmd that would get downloaded?
+
+---
+
+can we write that using R instead?
+
+---
+
+yes
+
+---
+
+can we preview the site?
+
+---
+
+<task-notification>
+<task-id>bc8wv8bvy</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-503/-Users-ebledsoe-Documents-Git-DataWranglingWebsite/460863e8-3cd2-4dab-a112-ade1a840c1b6/tasks/bc8wv8bvy.output</output-file>
+<status>completed</status>
+<summary>Background command "quarto preview 2&gt;&amp;1 &amp;" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+I don't want the code tag or download as pdf on the home page of the website
+
+---
+
+On the home page, can we link the listed topics to the table of contents on the right side of the website? perhaps the table of contents on the right side can be closed by default, and if you click on that topic in the list of topics on the home page, that section of the table of contents will open
+
+---
+
+sounds good
+
+---
+
+Lets commit these changes
+
+---
+
+no
+
+---
+
+lets push our changes
+
+---
+
+I'd like to make a folder for the print-button.html and strip_due_date.R files. can you move them and change any references to those files to point to the new file structure?
+
+---
+
+code_render
+
+---
+
+commit and push
+
+---
+
+can you rebuild the site or do i need to do that manually
+
+---
+
+is there a difference between triggering manually or via gh?
+
+---
+
+Is there a way to include an option to choose different releases on the website?
+
+---
+
+option B sounds best. does this mean that for every build with a new update, I will need to set the "release
+
+---
+
+yes. will each release default to the most recent version with that specific tag?
+
+---
+
+yes
+
+---
+
+One more question--is there are way to tag a release when I push an update to the DataWrangling repo?
+
+---
+
+wouldn't git push origin spring-2025 be creating a new branch? would I really need to do that?
+
+---
+
+I like the idea of tags
+
+---
+
+yes
+
+---
+
+Is there a way to put the "Save to PDF" option directly below the "code" option on each page? It could say PDF instead of "Save to PDF"
+
+---
+
+one more thing before we commit and push. On the homepage, instead of a list of the topics, can you create a table that has a column for the name of each topic, a column where you link to each lesson in that topic, and a column where you link to the assignment for that topic?

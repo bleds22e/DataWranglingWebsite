@@ -1,0 +1,86 @@
+{
+  "cli_version": "0.5.5",
+  "checkpoint_id": "f11ad7c60cf1",
+  "session_id": "460863e8-3cd2-4dab-a112-ade1a840c1b6",
+  "strategy": "manual-commit",
+  "created_at": "2026-04-17T20:18:15.486906Z",
+  "branch": "main",
+  "checkpoints_count": 4,
+  "files_touched": [
+    "code_render/_print-button.html",
+    "index.qmd"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-4-6",
+  "turn_id": "169c627aa428",
+  "token_usage": {
+    "input_tokens": 165,
+    "cache_creation_tokens": 67581,
+    "cache_read_tokens": 3791654,
+    "output_tokens": 46688,
+    "api_call_count": 91
+  },
+  "session_metrics": {
+    "turn_count": 34
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-04-17T20:18:15.464279Z",
+    "agent_lines": 68,
+    "agent_removed": 23,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 68,
+    "total_lines_changed": 91,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 94,
+      "user_lines_removed": 0,
+      "agent_lines_added": 6111,
+      "agent_lines_removed": 50,
+      "user_added_per_file": {
+        ".claude/settings.json": 84,
+        ".claude/settings.local.json": 10
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 94,
+      "user_lines_removed": 0,
+      "agent_lines_added": 6163,
+      "agent_lines_removed": 56,
+      "user_added_per_file": {
+        ".claude/settings.json": 84,
+        ".claude/settings.local.json": 10
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 297,
+      "user_lines_removed": 25,
+      "agent_lines_added": 6179,
+      "agent_lines_removed": 73,
+      "user_added_per_file": {
+        ".claude/settings.json": 84,
+        ".claude/settings.local.json": 10,
+        "_site/index.html": 202,
+        "_site/search.json": 1
+      },
+      "user_removed_per_file": {
+        "_site/index.html": 24,
+        "_site/search.json": 1
+      }
+    }
+  ]
+}
