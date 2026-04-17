@@ -20,6 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DATAWRANGLING_SHA: ${{ github.event.client_payload.sha || github.sha }}
+      SEMESTER: ${{ github.event.client_payload.semester || github.event.inputs.semester }}
 
     steps:
       - name: Checkout DataWranglingWebsite
@@ -128,21 +129,76 @@ jobs:
       - name: Render website
         run: quarto render --to html
 
+      - name: Ensure .nojekyll present
+        run: touch _site/.nojekyll
+
       - name: Deploy to GitHub Pages
-        uses: quarto-dev/quarto-actions/publish@v2
-        with:
-          target: gh-pages
-          render: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          REPO_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
+          # Clone gh-pages (or create orphan branch if first deploy)
+          git clone --depth 1 --branch gh-pages "$REPO_URL" /tmp/gh-pages 2>/dev/null || {
+            mkdir /tmp/gh-pages && cd /tmp/gh-pages
+            git init && git remote add origin "$REPO_URL"
+            git checkout --orphan gh-pages
+            cd -
+          }
+
+          # Preserve versions.json and any semester subfolders
+          mkdir -p /tmp/preserve
+          if [ -f /tmp/gh-pages/versions.json ]; then
+            cp /tmp/gh-pages/versions.json /tmp/preserve/versions.json
+          else
+            echo '[]' > /tmp/preserve/versions.json
+          fi
+          for dir in /tmp/gh-pages/*/; do
+            [ -d "$dir" ] || continue
+            name=$(basename "$dir")
+            echo "$name" | grep -qE '^(spring|fall|summer)-[0-9]{4}$' && cp -r "$dir" /tmp/preserve/
+          done
+
+          # Replace root content with the new build
+          find /tmp/gh-pages -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+          cp -r _site/. /tmp/gh-pages/
+
+          # Restore preserved content
+          cp -r /tmp/preserve/. /tmp/gh-pages/
+
+          # If this is a semester release, also deploy to the subfolder
+          if [ -n "$SEMESTER" ]; then
+            mkdir -p /tmp/gh-pages/$SEMESTER
+            cp -r _site/. /tmp/gh-pages/$SEMESTER/
+            python3 << 'PYEOF'
+import json, os
+path = '/tmp/gh-pages/versions.json'
+semester = os.environ['SEMESTER']
+versions = json.load(open(path))
+if semester not in versions:
+    versions.insert(0, semester)
+json.dump(versions, open(path, 'w'))
+PYEOF
+          fi
+
+          # Commit and push
+          cd /tmp/gh-pages
+          git add -A
+          git diff --cached --quiet || git commit -m "Deploy [${GITHUB_SHA::8}]${SEMESTER:+ | semester: $SEMESTER}"
+          git push origin gh-pages
 
       - name: Create semester release
-        if: ${{ github.event.inputs.semester != '' }}
+        if: ${{ env.SEMESTER != '' }}
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.event.inputs.semester }}
-          name: ${{ github.event.inputs.semester }}
+          tag_name: ${{ env.SEMESTER }}
+          name: ${{ env.SEMESTER }}
           body: |
-            Website snapshot for **${{ github.event.inputs.semester }}**.
+            Website snapshot for **${{ env.SEMESTER }}**.
 
             Built from DataWrangling commit: `${{ env.DATAWRANGLING_SHA }}`
 
-            View the live site: https://bleds22e.github.io/DataWranglingWebsite/
+            View the live site: https://bleds22e.github.io/DataWranglingWebsite/${{ env.SEMESTER }}/

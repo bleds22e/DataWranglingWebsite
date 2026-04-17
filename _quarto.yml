@@ -124,4 +124,6 @@ format:
     toc: true
     code-tools:
       source: true
-    include-after-body: code_render/_print-button.html
+    include-after-body:
+      - code_render/_print-button.html
+      - code_render/_version-selector.html

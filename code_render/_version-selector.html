@@ -1,0 +1,69 @@
+<script>
+(function () {
+  function getSiteRoot() {
+    var origin = window.location.origin;
+    var path = window.location.pathname;
+    // If inside a semester subfolder, strip it to find the root
+    var m = path.match(/^(.*\/)((?:spring|fall|summer)-\d{4})\//);
+    if (m) return origin + m[1];
+    // Otherwise assume first path segment is the repo/site root
+    var parts = path.split('/').filter(Boolean);
+    return parts.length >= 1 ? origin + '/' + parts[0] + '/' : origin + '/';
+  }
+
+  var root = getSiteRoot();
+
+  fetch(root + 'versions.json')
+    .then(function (r) { return r.json(); })
+    .then(function (versions) {
+      if (!versions.length) return;
+
+      var select = document.createElement('select');
+      select.title = 'Select version';
+      select.style.cssText = [
+        'margin-left:1rem',
+        'font-size:0.85rem',
+        'padding:0.2rem 0.5rem',
+        'border:1px solid rgba(255,255,255,0.4)',
+        'border-radius:4px',
+        'background:transparent',
+        'color:inherit',
+        'cursor:pointer'
+      ].join(';');
+
+      var latest = document.createElement('option');
+      latest.value = root;
+      latest.textContent = 'Latest';
+      select.appendChild(latest);
+
+      versions.forEach(function (v) {
+        var opt = document.createElement('option');
+        opt.value = root + v + '/';
+        opt.textContent = v;
+        select.appendChild(opt);
+      });
+
+      // Highlight the current version
+      var href = window.location.href;
+      for (var i = select.options.length - 1; i >= 0; i--) {
+        if (href.startsWith(select.options[i].value)) {
+          select.selectedIndex = i;
+          break;
+        }
+      }
+
+      select.addEventListener('change', function () {
+        window.location.href = this.value;
+      });
+
+      var nav = document.querySelector('.navbar-nav');
+      if (nav) {
+        var li = document.createElement('li');
+        li.className = 'nav-item d-flex align-items-center';
+        li.appendChild(select);
+        nav.appendChild(li);
+      }
+    })
+    .catch(function () {}); // Silently fail locally or if no versions exist yet
+})();
+</script>
