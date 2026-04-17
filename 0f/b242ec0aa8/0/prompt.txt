@@ -73,3 +73,7 @@ On the home page, can we link the listed topics to the table of contents on the 
 ---
 
 sounds good
+
+---
+
+Lets commit these changes
