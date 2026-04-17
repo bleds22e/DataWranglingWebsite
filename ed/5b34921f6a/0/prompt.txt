@@ -93,3 +93,7 @@ I'd like to make a folder for the print-button.html and strip_due_date.R files. 
 ---
 
 code_render
+
+---
+
+commit and push
