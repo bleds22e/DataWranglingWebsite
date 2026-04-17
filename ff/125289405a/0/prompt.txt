@@ -188,3 +188,7 @@ I think the line that failed is "import json, os"
 ---
 
 please delete the strip_due_date.R and _print-button.html file from the main folder--they are now in code_render
+
+---
+
+why are they still showing up on github?
