@@ -173,15 +173,9 @@ jobs:
           if [ -n "$SEMESTER" ]; then
             mkdir -p /tmp/gh-pages/$SEMESTER
             cp -r _site/. /tmp/gh-pages/$SEMESTER/
-            python3 -c "
-import json, os
-path = '/tmp/gh-pages/versions.json'
-semester = os.environ['SEMESTER']
-versions = json.load(open(path))
-if semester not in versions:
-    versions.insert(0, semester)
-json.dump(versions, open(path, 'w'))
-"
+            jq --arg s "$SEMESTER" 'if index($s) == null then [$s] + . else . end' \
+              /tmp/gh-pages/versions.json > /tmp/versions.tmp
+            mv /tmp/versions.tmp /tmp/gh-pages/versions.json
           fi
 
           # Commit and push
