@@ -1,6 +1,6 @@
 project:
   type: website
-  pre-render: strip_due_date.R
+  pre-render: code_render/strip_due_date.R
   render:
     - "index.qmd"
     - "**/*_Instructor.qmd"
@@ -124,4 +124,4 @@ format:
     toc: true
     code-tools:
       source: true
-    include-after-body: _print-button.html
+    include-after-body: code_render/_print-button.html

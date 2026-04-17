@@ -1,0 +1,26 @@
+<button id="print-btn" onclick="window.print()" style="
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+  padding: 0.4rem 0.9rem;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+">&#128438; Save as PDF</button>
+
+<style>
+@media print {
+  button { display: none !important; }
+}
+</style>
+
+<script>
+var path = window.location.pathname;
+if (path === '/' || path.endsWith('/index.html')) {
+  document.getElementById('print-btn').style.display = 'none';
+}
+</script>
