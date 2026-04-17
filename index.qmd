@@ -1,5 +1,6 @@
 ---
 title: "Data Wrangling in R for Ecologists"
+code-tools: false
 ---
 
 Welcome to **RNR 437/537: Data Wrangling in R for Ecologists**.
@@ -10,18 +11,18 @@ This site contains course lessons and assignments organized by topic. Use the si
 
 This course covers the following topics in order:
 
-1. Spreadsheets
-2. Introduction to R
-3. Vectors
-4. Data Tables and Pipes
-5. Groups and Joins
-6. Data Visualization
-7. Tidy Data
-8. Dates and Strings
-9. Solving Bigger Problems
-10. Reproducibility and File Paths
-11. Version Control
-12. Functions
-13. Making Choices
-14. Iteration
-15. Geospatial Data
+1. [Spreadsheets](Week01_Spreadsheets/Week1_Spreadsheets.qmd)
+2. [Introduction to R](Week02_IntrotoR/Week2_IntrotoR_Instructor.qmd)
+3. [Vectors](Week02_IntrotoR/Week2_Vectors_Instructor.qmd)
+4. [Data Tables and Pipes](Week03_DataTables/Week3_DataTables_Instructor.qmd)
+5. [Groups and Joins](Week04_Groups_and_Joins/Week4_Vectors_and_DataFames_Instructor.qmd)
+6. [Data Visualization](Week05_DataViz/Week5_DataVisualization_Instructor.qmd)
+7. [Tidy Data](Week06_TidyData/Week6_TidyData_Instructor.qmd)
+8. [Dates and Strings](Week07_DatesandStrings/Week14_DatesandTimes_Instructor.qmd)
+9. [Solving Bigger Problems](Week08_SolvingBiggerProblems/Week7_SolvingBiggerProblems_Instructor.qmd)
+10. [Reproducibility and File Paths](Week08_Reproducibility/scripts/Week8_Reproducibility_Instructor.qmd)
+11. [Version Control](Week10_VersionControl/code/Week10_VersionControl.qmd)
+12. [Functions](Week11_Functions/Week11_Functions_Instructor.qmd)
+13. [Making Choices](Week12_MakingChoices/Week12_MakingChoices_Instructor.qmd)
+14. [Iteration](Week13_Iteration/scripts/Week13_Iteration_Instructor.qmd)
+15. [Geospatial Data](Week14_GeospatialData/Week14_GeospatialData_Instructor.qmd)
