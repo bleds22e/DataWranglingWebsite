@@ -9,6 +9,10 @@ project:
     - "**/*_Assignment_key.qmd"
     - "Week08_Reproducibility/scripts/filepaths.qmd"
     - "Week10_VersionControl/code/Week10_VersionControl.qmd"
+    - "Week00_Demo/01_Welcome_and_Intro.qmd"
+    - "Week01_Spreadsheets/01_DataEntry.qmd"
+    - "Week01_Spreadsheets/02_QAQC.qmd"
+    - "Week10_VersionControl/Week10_VersionControl.qmd"
 
 website:
   title: "Data Wrangling in R for Ecologists"
@@ -23,6 +27,10 @@ website:
     contents:
       - section: "Spreadsheets"
         contents:
+          - href: Week01_Spreadsheets/01_DataEntry.qmd
+            text: "Slides: Data Entry"
+          - href: Week01_Spreadsheets/02_QAQC.qmd
+            text: "Slides: QA/QC"
           - href: Week01_Spreadsheets/Week1_Spreadsheets.qmd
             text: Spreadsheets
       - section: "Introduction to R"
@@ -87,6 +95,8 @@ website:
             text: Assignment
       - section: "Version Control"
         contents:
+          - href: Week10_VersionControl/Week10_VersionControl.qmd
+            text: "Slides: Version Control"
           - href: Week10_VersionControl/code/Week10_VersionControl.qmd
             text: Version Control
           - href: Week10_VersionControl/code/Week10_Assignment.qmd

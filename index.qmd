@@ -11,7 +11,7 @@ This site contains course lessons and assignments organized by topic. Use the si
 
 | Topic | Lesson(s) | Assignment |
 |-------|-----------|------------|
-| Spreadsheets | [Spreadsheets](Week01_Spreadsheets/Week1_Spreadsheets.qmd) | |
+| Spreadsheets | [Data Entry Slides](Week01_Spreadsheets/01_DataEntry.qmd)<br>[QA/QC Slides](Week01_Spreadsheets/02_QAQC.qmd)<br>[Spreadsheets](Week01_Spreadsheets/Week1_Spreadsheets.qmd) | |
 | Introduction to R | [Introduction to R](Week02_IntrotoR/Week2_IntrotoR_Instructor.qmd)<br>[Vectors](Week02_IntrotoR/Week2_Vectors_Instructor.qmd) | [Assignment](Week02_IntrotoR/Week2_Assignment.qmd) |
 | Data Tables | [Data Tables](Week03_DataTables/Week3_DataTables_Instructor.qmd)<br>[Pipes](Week03_DataTables/Week3_Pipes_Instructor.qmd) | [Assignment](Week03_DataTables/Week3_Assignment.qmd) |
 | Groups and Joins | [Vectors and Data Frames](Week04_Groups_and_Joins/Week4_Vectors_and_DataFames_Instructor.qmd)<br>[Aggregation](Week04_Groups_and_Joins/Week4_Aggregation_Instructor.qmd)<br>[Joins and Binds](Week04_Groups_and_Joins/Week4_Joins_Instructor.qmd) | [Assignment](Week04_Groups_and_Joins/Week4_Assignment.qmd) |
@@ -20,7 +20,7 @@ This site contains course lessons and assignments organized by topic. Use the si
 | Dates and Strings | [Dates and Times](Week07_DatesandStrings/Week14_DatesandTimes_Instructor.qmd)<br>[Strings](Week07_DatesandStrings/Week14_Strings_Instructor.qmd) | [Assignment](Week07_DatesandStrings/Week14_Assignment.qmd) |
 | Solving Bigger Problems | [Solving Bigger Problems](Week08_SolvingBiggerProblems/Week7_SolvingBiggerProblems_Instructor.qmd) | [Assignment](Week08_SolvingBiggerProblems/Week7_Assignment.qmd) |
 | Reproducibility | [Reproducibility](Week08_Reproducibility/scripts/Week8_Reproducibility_Instructor.qmd)<br>[File Paths](Week08_Reproducibility/scripts/filepaths.qmd) | [Assignment](Week08_Reproducibility/scripts/Week8_Assignment.qmd) |
-| Version Control | [Version Control](Week10_VersionControl/code/Week10_VersionControl.qmd) | [Assignment](Week10_VersionControl/code/Week10_Assignment.qmd) |
+| Version Control | [Version Control Slides](Week10_VersionControl/Week10_VersionControl.qmd)<br>[Version Control](Week10_VersionControl/code/Week10_VersionControl.qmd) | [Assignment](Week10_VersionControl/code/Week10_Assignment.qmd) |
 | Functions | [Functions](Week11_Functions/Week11_Functions_Instructor.qmd) | [Assignment](Week11_Functions/Week11_Assignment.qmd) |
 | Making Choices | [Making Choices](Week12_MakingChoices/Week12_MakingChoices_Instructor.qmd) | [Assignment](Week12_MakingChoices/Week12_Assignment.qmd) |
 | Iteration | [Iteration](Week13_Iteration/scripts/Week13_Iteration_Instructor.qmd) | [Assignment](Week13_Iteration/scripts/Week13_Assignment.qmd) |
