@@ -25,6 +25,10 @@ website:
     search: true
     collapse-level: 1
     contents:
+      - section: "Introduction to the Course"
+        contents:
+          - href: Week00_Demo/01_Welcome_and_Intro.qmd
+            text: "Slides: Welcome & Intro"
       - section: "Spreadsheets"
         contents:
           - href: Week01_Spreadsheets/01_DataEntry.qmd
