@@ -43,6 +43,9 @@ jobs:
             -o -name "*_Assignment_key.qmd" \
             -o -name "filepaths.qmd" \
             -o -name "Week10_VersionControl.qmd" \
+            -o -name "01_Welcome_and_Intro.qmd" \
+            -o -name "01_DataEntry.qmd" \
+            -o -name "02_QAQC.qmd" \
           \) | while IFS= read -r f; do
             rel="${f#datawrangling/}"
             mkdir -p "$(dirname "$rel")"
@@ -76,7 +79,7 @@ jobs:
                   continue
               text = open(path).read()
               def strip_format(m):
-                  header = re.sub(r'^format:.*\n', '', m.group(2), flags=re.MULTILINE)
+                  header = re.sub(r'^format:.*\n(?:[ \t]+.*\n)*', '', m.group(2), flags=re.MULTILINE)
                   return m.group(1) + header + m.group(3)
               patched = yaml_pattern.sub(strip_format, text, count=1)
               if patched != text:
