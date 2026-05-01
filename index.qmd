@@ -1,7 +1,10 @@
 ---
 title: "Data Wrangling in R for Ecologists"
+subtitle: "RNR 437/537, University of Arizona"
 code-tools: false
 ---
+
+![[Allison Horst](https://allisonhorst.com/other-r-fun)](images/conveyor_belt.jpg)
 
 Welcome to **RNR 437/537: Data Wrangling in R for Ecologists**.
 
@@ -10,9 +13,9 @@ This site contains course lessons and assignments organized by topic. Use the si
 ## Topics
 
 | Topic | Lesson(s) | Assignment |
-|-------|-----------|------------|
-| Introduction to the Course | [Welcome & Intro Slides](Week00_Demo/01_Welcome_and_Intro.qmd) | |
-| Spreadsheets | [Data Entry Slides](Week01_Spreadsheets/01_DataEntry.qmd)<br>[QA/QC Slides](Week01_Spreadsheets/02_QAQC.qmd)<br>[Spreadsheets](Week01_Spreadsheets/Week1_Spreadsheets.qmd) | |
+|------------------|--------------------------|----------------------------|
+| Introduction | [Welcome & Intro Slides](Week00_Demo/01_Welcome_and_Intro.qmd) |  |
+| Spreadsheets | [Data Entry Slides](Week01_Spreadsheets/01_DataEntry.qmd)<br>[QA/QC Slides](Week01_Spreadsheets/02_QAQC.qmd) |  |
 | Introduction to R | [Introduction to R](Week02_IntrotoR/Week2_IntrotoR_Instructor.qmd)<br>[Vectors](Week02_IntrotoR/Week2_Vectors_Instructor.qmd) | [Assignment](Week02_IntrotoR/Week2_Assignment.qmd) |
 | Data Tables | [Data Tables](Week03_DataTables/Week3_DataTables_Instructor.qmd)<br>[Pipes](Week03_DataTables/Week3_Pipes_Instructor.qmd) | [Assignment](Week03_DataTables/Week3_Assignment.qmd) |
 | Groups and Joins | [Vectors and Data Frames](Week04_Groups_and_Joins/Week4_Vectors_and_DataFames_Instructor.qmd)<br>[Aggregation](Week04_Groups_and_Joins/Week4_Aggregation_Instructor.qmd)<br>[Joins and Binds](Week04_Groups_and_Joins/Week4_Joins_Instructor.qmd) | [Assignment](Week04_Groups_and_Joins/Week4_Assignment.qmd) |
